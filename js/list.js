@@ -1,12 +1,4 @@
-const clear = document.querySelector(".clear")
 const dateElement = document.getElementById("date")
-const list = document.getElementById("list")
-const input = document.getElementById("input")
-
-const CHECK = "fa-check-circle";
-const UNCHECK = "fa-circle-thin";
-const LINE_THROUGH = "linethrough";
-
 const options = {weekday : "long", month:"short" , day:"numeric"};
 const today = new Date();
 dateElement.innerHTML = today.toLocaleDateString("en-us",options);
@@ -135,3 +127,76 @@ function calculateTasks() {
   tasksCompleted.innerHTML = document.querySelectorAll('.tasks-content .finished').length;
   
 }  
+var to_dos = [];
+
+// Adding The Task
+theAddButton.onclick = function () {
+  
+  // If Input is Empty
+  if (theInput.value === '') {
+    
+    console.log("No Value");
+    
+  } else {
+
+    to_dos.push(theInput.value);
+    
+    createTodoElement();
+
+    // Empty The Input
+    theInput.value = '';
+    
+    // Focus On Field
+    theInput.focus();
+    
+    // Calculate Tasks
+    calculateTasks();
+    
+  }
+  
+};
+
+function createTodoElement(){
+  
+  if(to_dos.length !== 0){
+    console.log(to_dos);
+    tasksContainer.innerHTML = " ";
+
+    let noTasksMsg = document.querySelector(".no-tasks-message");
+      
+      // Check If Span With No Tasks Message Is Exist
+      if (document.body.contains(document.querySelector(".no-tasks-message"))) { 
+        noTasksMsg.remove();
+      }
+  
+      to_dos.forEach(to_do => {
+          // Create Main Span Element
+        let mainSpan = document.createElement("span");
+        
+        // Create Delete Button
+        let deleteElement = document.createElement("span");
+        
+        // Create The Main Span Text
+        let text = document.createTextNode(to_do);
+        let deleteText = document.createTextNode("Delete");
+        
+        // Add Text To Main Span
+        mainSpan.appendChild(text);
+        
+        // Add Class To Main Span
+        mainSpan.className = 'task-box';
+        
+        // Add Text To Delete Button
+        deleteElement.appendChild(deleteText);
+        
+        // Add Class To Delete Button
+        deleteElement.className = 'delete';
+        // Add Delete Button To Main Span
+        mainSpan.appendChild(deleteElement);
+        
+        // Add The Task To The Container
+        tasksContainer.appendChild(mainSpan);
+        
+      });
+  }
+}
